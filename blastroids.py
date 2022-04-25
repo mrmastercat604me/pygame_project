@@ -5,8 +5,8 @@ pygame.init()
 #-----------------
 # Changeable Variables
 #-----------------
-scrn_width = 900
-scrn_height = 900
+scrn_width = 400
+scrn_height = 400
 bckgrnd_color = (0,0,0)
 #--------------------------
 

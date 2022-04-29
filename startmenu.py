@@ -1,4 +1,3 @@
-from ast import Delete
 import pygame, sys, time
 
 mainClock = pygame.time.Clock()

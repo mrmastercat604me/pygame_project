@@ -1,5 +1,4 @@
-from ast import Delete
-import pygame, sys, time
+import pygame, sys
 
 mainClock = pygame.time.Clock()
 from pygame.locals import *
@@ -27,6 +26,7 @@ click = False
 
 def main_menu():
     while True:
+        screen.fill((0,0,0))
         draw_text('Blast Roids',font, (255, 255, 0), screen, 250, 100)
 
         mx, my = pygame.mouse.get_pos()

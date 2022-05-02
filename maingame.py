@@ -66,9 +66,15 @@ def game():
     running = True
     click = False
     Velocity = 7
+    
     shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
     shipimage_rect= shipimage.get_rect()
     shipimage_rect.center = (400,400)
+    enemyimage = pygame.image.load("assets/meteor1.png")
+    enemyimage_rect= enemyimage.get_rect()
+    enemyimage_rect.x = random.randint(-100,100) 
+    enemyimage_rect.y = random.randint(-100,100)
+
     while running:
         screen.fill((0,0,0))
         
@@ -81,15 +87,6 @@ def game():
             rot_image_rect = rot_image.get_rect(center = image_rect.center)
             surface.blit(rot_image,rot_image_rect.topleft)
             pygame.display.update()
-        
-        enemyimage = pygame.image.load("assets/meteor1.png")
-        enemyimage_rect= enemyimage.get_rect()
-        enemyimage_rect.x = random.randint(-100,100) 
-        enemyimage_rect.y = random.randint(-100,100)
-
-        
-
-
 
         for event in pygame.event.get():
             key = pygame.key.get_pressed()

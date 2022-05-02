@@ -6,6 +6,12 @@ pygame.init()
 pygame.display.set_caption('Blastroids Game')
 screen = pygame.display.set_mode((800,800),0,32)
 
+Backgroundimage = pygame.image.load("assets/background-black.png")
+Backgroundimage_rec= Backgroundimage.get_rect()
+Backgroundimage_rec.topleft=(0,0)
+Backgroundimage = pygame.transform.scale(Backgroundimage,(800,800))
+
+
 font = pygame.font.SysFont(None, 75)
 
 def draw_text(text, font, color, surface, x,y):
@@ -20,6 +26,7 @@ click = False
 def main_menu():
     while True:
         screen.fill((0,0,0))
+        screen.blit(Backgroundimage,Backgroundimage_rec)
         draw_text('Blast Roids',font, (255, 255, 0), screen, 250, 100)
         #----------------------------------
         mx, my = pygame.mouse.get_pos()
@@ -63,8 +70,7 @@ def game():
     shipimage_rect.center = (400,400)
     while running:
         screen.fill((0,0,0))
-        Backgroundimage = pygame.image.load("assets/background-black.png")
-        Backgroundimage_rec= Backgroundimage.get_rect()
+        
 
         def face_mouse(image,image_rect,correction_angle,surface):
             mx, my = pygame.mouse.get_pos()
@@ -80,8 +86,7 @@ def game():
         enemy_x_pos = random.randint(-100,100) 
         enemy_y_pos = random.randint(-100,100)
 
-        Backgroundimage_rec.topleft=(0,0)
-        Backgroundimage = pygame.transform.scale(Backgroundimage,(800,800))
+        
 
 
 

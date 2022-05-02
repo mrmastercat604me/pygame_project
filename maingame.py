@@ -70,6 +70,7 @@ def game():
     shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
     shipimage_rect= shipimage.get_rect()
     shipimage_rect.center = (400,400)
+
     enemyimage = pygame.image.load("assets/meteor1.png")
     enemyimage_rect= enemyimage.get_rect()
     enemyimage_rect.x = random.randint(20,780) 
@@ -77,10 +78,16 @@ def game():
     if enemyimage_rect.colliderect(shipimage_rect):
         enemyimage_rect.x = random.randint(20,780) 
         enemyimage_rect.y = random.randint(20,780)
+    
+    laser = pygame.image.load("assets/pixel_laser_yellow.png")
+    laser_rect = laser.get_rect()
+    laser_rect.center = (-100,-100)
 
     lives = 3
+
+    screen.fill((0,0,0))
     while running:
-        screen.fill((0,0,0))
+        
         def face_mouse(image,image_rect,correction_angle,surface):
             mx, my = pygame.mouse.get_pos()
             dx,dy =  mx - image_rect.centerx, my - image_rect.centery
@@ -117,17 +124,21 @@ def game():
             enemyimage_rect.x = random.randint(20,780) 
             enemyimage_rect.y = random.randint(20,780)
 
-        if click:
-            print("Pew")
-            click = False
-
-        screen.fill((0,0,0))
         screen.blit(Backgroundimage,Backgroundimage_rec)
+
         font = pygame.font.SysFont(None, 40)
         draw_text((f"Lives: {lives}"),font,(255,0,0),screen,0,0)
         font = pygame.font.SysFont(None, 75)
+
         screen.blit(enemyimage,enemyimage_rect)
         face_mouse(shipimage,shipimage_rect,90,screen)
+        screen.blit(laser,laser_rect)
+
+        if click:
+            laser_rect.center = shipimage_rect.center
+            print("Pew")
+            click = False
+
         pygame.display.update()
         mainClock.tick(60)
 

@@ -66,7 +66,7 @@ def game():
     running = True
     click = False
     Velocity = 7
-
+    
     shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
     shipimage_rect= shipimage.get_rect()
     shipimage_rect.center = (400,400)

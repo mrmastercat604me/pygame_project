@@ -66,19 +66,17 @@ def game():
     running = True
     click = False
     Velocity = 7
-    
+
     shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
     shipimage_rect= shipimage.get_rect()
     shipimage_rect.center = (400,400)
     enemyimage = pygame.image.load("assets/meteor1.png")
     enemyimage_rect= enemyimage.get_rect()
-    enemyimage_rect.x = random.randint(-100,100) 
-    enemyimage_rect.y = random.randint(-100,100)
+    enemyimage_rect.x = random.randint(20,780) 
+    enemyimage_rect.y = random.randint(20,780)
 
     while running:
         screen.fill((0,0,0))
-        
-
         def face_mouse(image,image_rect,correction_angle,surface):
             mx, my = pygame.mouse.get_pos()
             dx,dy =  mx - image_rect.centerx, my - image_rect.centery
@@ -104,14 +102,16 @@ def game():
                 shipimage_rect.y -= Velocity
             if key[pygame.K_s]:
                 shipimage_rect.y += Velocity
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
                 
-
-        screen.fill((0,0,0))
-        screen.blit(Backgroundimage,Backgroundimage_rec)
-        screen.blit(enemyimage,enemyimage_rect)
         if click:
             print("Pew")
             click = False
+        screen.fill((0,0,0))
+        screen.blit(Backgroundimage,Backgroundimage_rec)
+        screen.blit(enemyimage,enemyimage_rect)
         face_mouse(shipimage,shipimage_rect,90,screen)
         pygame.display.update()
         mainClock.tick(60)

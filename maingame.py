@@ -81,10 +81,10 @@ def game():
             surface.blit(rot_image,rot_image_rect.topleft)
             pygame.display.update()
         
-        enemyimage = pygame.image.load("assets/pixel_ship_green_small.png")
+        enemyimage = pygame.image.load("assets/meteor1.png")
         enemyimage_rect= enemyimage.get_rect()
-        enemy_x_pos = random.randint(-100,100) 
-        enemy_y_pos = random.randint(-100,100)
+        enemyimage_rect.x = random.randint(-100,100) 
+        enemyimage_rect.y = random.randint(-100,100)
 
         
 

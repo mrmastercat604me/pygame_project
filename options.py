@@ -152,18 +152,4 @@ def options():
         pygame.display.update()
         mainClock.tick(60)
 
-
-        #draw_text('options',font, (255, 255, 255), screen, 20, 20)
-        #for event in pygame.event.get():
-            #if event.type == QUIT:
-                #pygame.quit()
-                #sys.exit()
-            #if event.type == KEYDOWN:
-                #if event.key == K_ESCAPE:
-                    #running = False
-                #screen.fill((0,0,0))
-        #screen.blit(Backgroundimage,Backgroundimage_rec)
-        #pygame.display.update()
-        #mainClock.tick(60)
-
 main_menu()

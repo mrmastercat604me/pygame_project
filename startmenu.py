@@ -10,6 +10,11 @@ screen = pygame.display.set_mode((800,800),0,32)
 
 font = pygame.font.SysFont(None, 75)
 
+backroundimage = pygame.image.load("background-black.png")
+backroundimage_rect = backroundimage.get_rect()
+backroundimage_rect.topleft = (0,0)
+backroundimage = pygame.transform.scale(backroundimage,(800,800))
+
 def draw_text(text, font, color, surface, x,y):
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
@@ -29,6 +34,7 @@ click = False
 def main_menu():
     while True:
         screen.fill((0,0,0))
+        screen.blit(backroundimage,backroundimage_rect)
         draw_text('Blast Roids',font, (255, 255, 0), screen, 250, 100)
 
         mx, my = pygame.mouse.get_pos()

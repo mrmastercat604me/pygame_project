@@ -74,7 +74,11 @@ def game():
     enemyimage_rect= enemyimage.get_rect()
     enemyimage_rect.x = random.randint(20,780) 
     enemyimage_rect.y = random.randint(20,780)
+    if enemyimage_rect.colliderect(shipimage_rect):
+        enemyimage_rect.x = random.randint(20,780) 
+        enemyimage_rect.y = random.randint(20,780)
 
+    lives = 3
     while running:
         screen.fill((0,0,0))
         def face_mouse(image,image_rect,correction_angle,surface):
@@ -105,12 +109,23 @@ def game():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
-                
+            if lives <= 0:
+                running = False
+
+        if enemyimage_rect.colliderect(shipimage_rect):
+            lives -= 1
+            enemyimage_rect.x = random.randint(20,780) 
+            enemyimage_rect.y = random.randint(20,780)
+
         if click:
             print("Pew")
             click = False
+
         screen.fill((0,0,0))
         screen.blit(Backgroundimage,Backgroundimage_rec)
+        font = pygame.font.SysFont(None, 40)
+        draw_text((f"Lives: {lives}"),font,(255,0,0),screen,0,0)
+        font = pygame.font.SysFont(None, 75)
         screen.blit(enemyimage,enemyimage_rect)
         face_mouse(shipimage,shipimage_rect,90,screen)
         pygame.display.update()

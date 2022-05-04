@@ -70,7 +70,7 @@ def game():
     running = True
     click = False
     Velocity = 7
-    laser_vel = 10
+    laser_vel = 0
     
     if color == "yellow":
         shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
@@ -154,6 +154,7 @@ def game():
         face_mouse(shipimage,shipimage_rect,90,screen)
         
         if click:
+            laser_vel = 10
             laser_rect.center = shipimage_rect.center
             mx, my = pygame.mouse.get_pos()
             dx,dy = mx - laser_rect.centerx, my - laser_rect.centery
@@ -164,8 +165,10 @@ def game():
             print("Pew")
             click = False
         #DEBUG pygame.draw.rect(screen,(255,255,255),laser_rect,2)
-        laser_rect.x += laser_vel
-        laser_rect.y += laser_vel
+        
+        if laser_rect.x >= 800 or laser_rect.x <= 0:
+            if laser_rect.y >= 800 or laser_rect.x <= 0:
+                laser_vel = 0
         screen.blit(laser,laser_rect)
 
         pygame.display.update()

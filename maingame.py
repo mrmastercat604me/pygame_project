@@ -14,6 +14,8 @@ Backgroundimage = pygame.transform.scale(Backgroundimage,(800,800))
 
 font = pygame.font.SysFont(None, 75)
 
+color = "yellow"
+
 def draw_text(text, font, color, surface, x,y):
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
@@ -63,28 +65,57 @@ def main_menu():
         mainClock.tick(60)
 
 def game():
+    global color
+
     running = True
     click = False
     Velocity = 7
+    laser_vel = 0
+    
+    if color == "yellow":
+        shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
+        laser = pygame.image.load("assets/pixel_laser_yellow.png")
+        laser_first = pygame.image.load("assets/pixel_laser_yellow.png")
+    elif color == "green":
+        shipimage = pygame.image.load("assets/pixel_ship_green_small.png")
+        laser = pygame.image.load("assets/pixel_laser_green.png")
+        laser_first = pygame.image.load("assets/pixel_laser_green.png")
+    elif color == "red":
+        shipimage = pygame.image.load("assets/pixel_ship_red_small.png")
+        laser = pygame.image.load("assets/pixel_laser_red.png")
+        laser_first = pygame.image.load("assets/pixel_laser_red.png")
+    elif color == "blue":
+        shipimage = pygame.image.load("assets/pixel_ship_blue_small.png")
+        laser = pygame.image.load("assets/pixel_laser_blue.png")
+        laser_first = pygame.image.load("assets/pixel_laser_blue.png")
 
-    shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
     shipimage_rect= shipimage.get_rect()
     shipimage_rect.center = (400,400)
+
     enemyimage = pygame.image.load("assets/meteor1.png")
     enemyimage_rect= enemyimage.get_rect()
     enemyimage_rect.x = random.randint(20,780) 
     enemyimage_rect.y = random.randint(20,780)
+    if enemyimage_rect.colliderect(shipimage_rect):
+        enemyimage_rect.x = random.randint(20,780) 
+        enemyimage_rect.y = random.randint(20,780)
+    
+    laser_rect = laser.get_rect()
+    laser_rect.center = (-100,-100)
 
+    lives = 3
+
+    screen.fill((0,0,0))
     while running:
-        screen.fill((0,0,0))
+        
         def face_mouse(image,image_rect,correction_angle,surface):
             mx, my = pygame.mouse.get_pos()
             dx,dy =  mx - image_rect.centerx, my - image_rect.centery
             angle =  math.degrees(math.atan2(-dy, dx)) - correction_angle
             rot_image = pygame.transform.rotate(image,angle)
             rot_image_rect = rot_image.get_rect(center = image_rect.center)
+            #DEBUG pygame.draw.rect(surface,(255,255,255),rot_image_rect,2)
             surface.blit(rot_image,rot_image_rect.topleft)
-            pygame.display.update()
 
         for event in pygame.event.get():
             key = pygame.key.get_pressed()
@@ -105,14 +136,41 @@ def game():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
-                
-        if click:
-            print("Pew")
-            click = False
-        screen.fill((0,0,0))
+            if lives <= 0:
+                running = False
+
+        if enemyimage_rect.colliderect(shipimage_rect):
+            lives -= 1
+            enemyimage_rect.x = random.randint(20,780) 
+            enemyimage_rect.y = random.randint(20,780)
+
         screen.blit(Backgroundimage,Backgroundimage_rec)
+
+        font = pygame.font.SysFont(None, 40)
+        draw_text((f"Lives: {lives}"),font,(255,0,0),screen,0,0)
+        font = pygame.font.SysFont(None, 75)
+
         screen.blit(enemyimage,enemyimage_rect)
         face_mouse(shipimage,shipimage_rect,90,screen)
+        
+        if click:
+            laser_vel = 10
+            laser_rect.center = shipimage_rect.center
+            mx, my = pygame.mouse.get_pos()
+            dx,dy = mx - laser_rect.centerx, my - laser_rect.centery
+
+            angle = math.degrees(math.atan2(-dy,dx)) - 90 #correction angle
+            laser = pygame.transform.rotate(laser_first,angle)
+            laser_rect = laser.get_rect(center = laser_rect.center)
+            print("Pew")
+            click = False
+        #DEBUG pygame.draw.rect(screen,(255,255,255),laser_rect,2)
+        
+        if laser_rect.x >= 800 or laser_rect.x <= 0:
+            if laser_rect.y >= 800 or laser_rect.x <= 0:
+                laser_vel = 0
+        screen.blit(laser,laser_rect)
+
         pygame.display.update()
         mainClock.tick(60)
 

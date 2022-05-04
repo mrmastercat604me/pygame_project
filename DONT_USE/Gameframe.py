@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< HEAD:Gameframe.py
 import pygame
 import random
@@ -5,17 +6,24 @@ import math
 =======
 import pygame,random,math
 >>>>>>> 8d3936aa91f330aeb22e6995694f719097632e8f:DONT_USE/Gameframe.py
+=======
+import pygame,random,math
+>>>>>>> 8d3936aa91f330aeb22e6995694f719097632e8f
 pygame.init()
 
 
 width = 800
 height = 800
 fps = 60
+<<<<<<< HEAD
 <<<<<<< HEAD:Gameframe.py
 Velocity = 10
 =======
 Velocity = 3
 >>>>>>> 8d3936aa91f330aeb22e6995694f719097632e8f:DONT_USE/Gameframe.py
+=======
+Velocity = 3
+>>>>>>> 8d3936aa91f330aeb22e6995694f719097632e8f
 display_surface = pygame.display.set_mode((width, height))
 Backgroundimage = pygame.image.load("assets/background-black.png")
 Backgroundimage_rec= Backgroundimage.get_rect()
@@ -89,12 +97,16 @@ while running:
         if surface is not None:
                 display_surface.blit(surface, (0, 0))
         display_surface.blit(enemyimage,enemyimage_rec)
+<<<<<<< HEAD
 <<<<<<< HEAD:Gameframe.py
         #display_surface.blit(shipimage,shipimage_rect)
         face_mouse(shipimage, shipimage_rect, 90, display_surface)
 =======
         face_mouse(shipimage,shipimage_rect,90,display_surface)
 >>>>>>> 8d3936aa91f330aeb22e6995694f719097632e8f:DONT_USE/Gameframe.py
+=======
+        face_mouse(shipimage,shipimage_rect,90,display_surface)
+>>>>>>> 8d3936aa91f330aeb22e6995694f719097632e8f
         pygame.display.update()
         pygame.display.update(Backgroundimage_rec)
         clock.tick(fps)

@@ -70,15 +70,25 @@ def game():
     running = True
     click = False
     Velocity = 7
+    laser_vel = 10
     
     if color == "yellow":
         shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
+        laser = pygame.image.load("assets/pixel_laser_yellow.png")
+        laser_first = pygame.image.load("assets/pixel_laser_yellow.png")
     elif color == "green":
         shipimage = pygame.image.load("assets/pixel_ship_green_small.png")
+        laser = pygame.image.load("assets/pixel_laser_green.png")
+        laser_first = pygame.image.load("assets/pixel_laser_green.png")
     elif color == "red":
         shipimage = pygame.image.load("assets/pixel_ship_red_small.png")
+        laser = pygame.image.load("assets/pixel_laser_red.png")
+        laser_first = pygame.image.load("assets/pixel_laser_red.png")
     elif color == "blue":
         shipimage = pygame.image.load("assets/pixel_ship_blue_small.png")
+        laser = pygame.image.load("assets/pixel_laser_blue.png")
+        laser_first = pygame.image.load("assets/pixel_laser_blue.png")
+
     shipimage_rect= shipimage.get_rect()
     shipimage_rect.center = (400,400)
 
@@ -90,7 +100,6 @@ def game():
         enemyimage_rect.x = random.randint(20,780) 
         enemyimage_rect.y = random.randint(20,780)
     
-    laser = pygame.image.load("assets/pixel_laser_yellow.png")
     laser_rect = laser.get_rect()
     laser_rect.center = (-100,-100)
 
@@ -105,8 +114,8 @@ def game():
             angle =  math.degrees(math.atan2(-dy, dx)) - correction_angle
             rot_image = pygame.transform.rotate(image,angle)
             rot_image_rect = rot_image.get_rect(center = image_rect.center)
+            #DEBUG pygame.draw.rect(surface,(255,255,255),rot_image_rect,2)
             surface.blit(rot_image,rot_image_rect.topleft)
-            pygame.display.update()
 
         for event in pygame.event.get():
             key = pygame.key.get_pressed()
@@ -148,11 +157,15 @@ def game():
             laser_rect.center = shipimage_rect.center
             mx, my = pygame.mouse.get_pos()
             dx,dy = mx - laser_rect.centerx, my - laser_rect.centery
-            angle = math.degrees(math.atan2(-dy,dx)) - 90
-            laser = pygame.transform.rotate(laser,angle)
+
+            angle = math.degrees(math.atan2(-dy,dx)) - 90 #correction angle
+            laser = pygame.transform.rotate(laser_first,angle)
             laser_rect = laser.get_rect(center = laser_rect.center)
             print("Pew")
             click = False
+        #DEBUG pygame.draw.rect(screen,(255,255,255),laser_rect,2)
+        laser_rect.x += laser_vel
+        laser_rect.y += laser_vel
         screen.blit(laser,laser_rect)
 
         pygame.display.update()

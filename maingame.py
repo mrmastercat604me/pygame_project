@@ -71,6 +71,8 @@ def game():
     click = False
     Velocity = 7
     laser_vel = 0
+    lives = 3
+    score = 0
     
     if color == "yellow":
         shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
@@ -102,8 +104,6 @@ def game():
     
     laser_rect = laser.get_rect()
     laser_rect.center = (-100,-100)
-
-    lives = 3
 
     screen.fill((0,0,0))
     while running:
@@ -143,11 +143,29 @@ def game():
             lives -= 1
             enemyimage_rect.x = random.randint(20,780) 
             enemyimage_rect.y = random.randint(20,780)
+        if laser_rect.colliderect(enemyimage_rect):
+            score += 1
+            enemyimage_rect.x = random.randint(20,780)
+            enemyimage_rect.y = random.randint(20,780)
+        if laser_rect.x >= 800 or laser_rect.x <= 0:
+            if laser_rect.y >= 800 or laser_rect.x <= 0:
+                laser_vel = 0
+                pew = False
+
+        if shipimage_rect.centerx == 0:
+            shipimage_rect.centerx = 760
+        if shipimage_rect.centerx == 780:
+            shipimage_rect.centerx = 20
+        if shipimage_rect.centery == 0:
+            shipimage_rect.centery = 780
+        if shipimage_rect.centery == 800:
+            shipimage_rect.centery = 20
 
         screen.blit(Backgroundimage,Backgroundimage_rec)
 
         font = pygame.font.SysFont(None, 40)
         draw_text((f"Lives: {lives}"),font,(255,0,0),screen,0,0)
+        draw_text((f"Score: {score}"),font,(255,255,0),screen,690,0)
         font = pygame.font.SysFont(None, 75)
 
         screen.blit(enemyimage,enemyimage_rect)
@@ -158,19 +176,30 @@ def game():
             laser_rect.center = shipimage_rect.center
             mx, my = pygame.mouse.get_pos()
             dx,dy = mx - laser_rect.centerx, my - laser_rect.centery
-
             angle = math.degrees(math.atan2(-dy,dx)) - 90 #correction angle
             laser = pygame.transform.rotate(laser_first,angle)
             laser_rect = laser.get_rect(center = laser_rect.center)
             print("Pew")
             click = False
+            pew = True
         #DEBUG pygame.draw.rect(screen,(255,255,255),laser_rect,2)
-        
-        if laser_rect.x >= 800 or laser_rect.x <= 0:
-            if laser_rect.y >= 800 or laser_rect.x <= 0:
-                laser_vel = 0
-        screen.blit(laser,laser_rect)
+            
+        #  PSEUDO CODE
+            mx_constant_update,my_constant_update = pygame.mouse.get_pos()
+        if pew == True:
+            mx,my = mx_constant_update,my_constant_update
+            
+            dx,dy = mx - laser_rect.centerx,my - laser_rect.centery
+            ## DO THESE TWO IN ONE STEP OF 1 CHANGE AT A TIME!!!
+            laser_rect.x += dx
+            laser_rect.y += dy
+        #
+        #
+        #
+        #
 
+
+        screen.blit(laser,laser_rect)
         pygame.display.update()
         mainClock.tick(60)
 

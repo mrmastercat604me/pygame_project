@@ -14,6 +14,8 @@ Backgroundimage = pygame.transform.scale(Backgroundimage,(800,800))
 
 font = pygame.font.SysFont(None, 75)
 
+color = "yellow"
+
 def draw_text(text, font, color, surface, x,y):
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
@@ -63,11 +65,20 @@ def main_menu():
         mainClock.tick(60)
 
 def game():
+    global color
+
     running = True
     click = False
     Velocity = 7
     
-    shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
+    if color == "yellow":
+        shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
+    elif color == "green":
+        shipimage = pygame.image.load("assets/pixel_ship_green_small.png")
+    elif color == "red":
+        shipimage = pygame.image.load("assets/pixel_ship_red_small.png")
+    elif color == "blue":
+        shipimage = pygame.image.load("assets/pixel_ship_blue_small.png")
     shipimage_rect= shipimage.get_rect()
     shipimage_rect.center = (400,400)
 
@@ -132,12 +143,17 @@ def game():
 
         screen.blit(enemyimage,enemyimage_rect)
         face_mouse(shipimage,shipimage_rect,90,screen)
-        screen.blit(laser,laser_rect)
-
+        
         if click:
             laser_rect.center = shipimage_rect.center
+            mx, my = pygame.mouse.get_pos()
+            dx,dy = mx - laser_rect.centerx, my - laser_rect.centery
+            angle = math.degrees(math.atan2(-dy,dx)) - 90
+            laser = pygame.transform.rotate(laser,angle)
+            laser_rect = laser.get_rect(center = laser_rect.center)
             print("Pew")
             click = False
+        screen.blit(laser,laser_rect)
 
         pygame.display.update()
         mainClock.tick(60)

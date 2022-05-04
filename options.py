@@ -178,6 +178,14 @@ def cheat():
                 if active:
                     if event.key == pygame.K_RETURN:
                         print(text)
+                        if text == "bruh":
+                            cheat1 = True
+                        if text == "123":
+                            cheat2 = True
+                        if text == "hola":
+                            cheat3 = True
+                        if text == "10101":
+                            cheat4 = True
                         text = ''
                     elif event.key == pygame.K_BACKSPACE:
                         text = text[:-1]

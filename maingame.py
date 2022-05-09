@@ -1,4 +1,6 @@
 import pygame, sys, math, random
+from classes import Player
+from game import game
 
 mainClock = pygame.time.Clock()
 from pygame.locals import *
@@ -43,7 +45,8 @@ def main_menu():
         draw_text('Options',font, (0, 0, 0), screen, 285, 410)
         if button_1.collidepoint((mx, my)):
             if click:
-                game()
+                player = Player(color,(400,400),screen)
+                game(screen,player,mainClock,Backgroundimage,Backgroundimage_rec)
         if button_2.collidepoint((mx, my)):
             if click:
                 options()
@@ -64,144 +67,6 @@ def main_menu():
         pygame.display.update()
         mainClock.tick(60)
 
-def game():
-    global color
-
-    running = True
-    click = False
-    Velocity = 7
-    laser_vel = 0
-    lives = 3
-    score = 0
-    
-    if color == "yellow":
-        shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
-        laser = pygame.image.load("assets/pixel_laser_yellow.png")
-        laser_first = pygame.image.load("assets/pixel_laser_yellow.png")
-    elif color == "green":
-        shipimage = pygame.image.load("assets/pixel_ship_green_small.png")
-        laser = pygame.image.load("assets/pixel_laser_green.png")
-        laser_first = pygame.image.load("assets/pixel_laser_green.png")
-    elif color == "red":
-        shipimage = pygame.image.load("assets/pixel_ship_red_small.png")
-        laser = pygame.image.load("assets/pixel_laser_red.png")
-        laser_first = pygame.image.load("assets/pixel_laser_red.png")
-    elif color == "blue":
-        shipimage = pygame.image.load("assets/pixel_ship_blue_small.png")
-        laser = pygame.image.load("assets/pixel_laser_blue.png")
-        laser_first = pygame.image.load("assets/pixel_laser_blue.png")
-
-    shipimage_rect= shipimage.get_rect()
-    shipimage_rect.center = (400,400)
-
-    enemyimage = pygame.image.load("assets/meteor1.png")
-    enemyimage_rect= enemyimage.get_rect()
-    enemyimage_rect.x = random.randint(20,780) 
-    enemyimage_rect.y = random.randint(20,780)
-    if enemyimage_rect.colliderect(shipimage_rect):
-        enemyimage_rect.x = random.randint(20,780) 
-        enemyimage_rect.y = random.randint(20,780)
-    
-    laser_rect = laser.get_rect()
-    laser_rect.center = (-100,-100)
-
-    screen.fill((0,0,0))
-    while running:
-        
-        def face_mouse(image,image_rect,correction_angle,surface):
-            mx, my = pygame.mouse.get_pos()
-            dx,dy =  mx - image_rect.centerx, my - image_rect.centery
-            angle =  math.degrees(math.atan2(-dy, dx)) - correction_angle
-            rot_image = pygame.transform.rotate(image,angle)
-            rot_image_rect = rot_image.get_rect(center = image_rect.center)
-            #DEBUG pygame.draw.rect(surface,(255,255,255),rot_image_rect,2)
-            surface.blit(rot_image,rot_image_rect.topleft)
-
-        for event in pygame.event.get():
-            key = pygame.key.get_pressed()
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    running = False
-            if key[pygame.K_a]:
-                shipimage_rect.x -= Velocity
-            if key[pygame.K_d]:
-                shipimage_rect.x += Velocity
-            if key[pygame.K_w]:
-                shipimage_rect.y -= Velocity
-            if key[pygame.K_s]:
-                shipimage_rect.y += Velocity
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
-            if lives <= 0:
-                running = False
-
-        if enemyimage_rect.colliderect(shipimage_rect):
-            lives -= 1
-            enemyimage_rect.x = random.randint(20,780) 
-            enemyimage_rect.y = random.randint(20,780)
-        if laser_rect.colliderect(enemyimage_rect):
-            score += 1
-            enemyimage_rect.x = random.randint(20,780)
-            enemyimage_rect.y = random.randint(20,780)
-        if laser_rect.x >= 800 or laser_rect.x <= 0:
-            if laser_rect.y >= 800 or laser_rect.x <= 0:
-                laser_vel = 0
-                pew = False
-
-        if shipimage_rect.centerx == 0:
-            shipimage_rect.centerx = 760
-        if shipimage_rect.centerx == 780:
-            shipimage_rect.centerx = 20
-        if shipimage_rect.centery == 0:
-            shipimage_rect.centery = 780
-        if shipimage_rect.centery == 800:
-            shipimage_rect.centery = 20
-
-        screen.blit(Backgroundimage,Backgroundimage_rec)
-
-        font = pygame.font.SysFont(None, 40)
-        draw_text((f"Lives: {lives}"),font,(255,0,0),screen,0,0)
-        draw_text((f"Score: {score}"),font,(255,255,0),screen,690,0)
-        font = pygame.font.SysFont(None, 75)
-
-        screen.blit(enemyimage,enemyimage_rect)
-        face_mouse(shipimage,shipimage_rect,90,screen)
-        
-        if click:
-            laser_vel = 10
-            laser_rect.center = shipimage_rect.center
-            mx, my = pygame.mouse.get_pos()
-            dx,dy = mx - laser_rect.centerx, my - laser_rect.centery
-            angle = math.degrees(math.atan2(-dy,dx)) - 90 #correction angle
-            laser = pygame.transform.rotate(laser_first,angle)
-            laser_rect = laser.get_rect(center = laser_rect.center)
-            print("Pew")
-            click = False
-            pew = True
-        #DEBUG pygame.draw.rect(screen,(255,255,255),laser_rect,2)
-            
-        #  PSEUDO CODE
-            mx_constant_update,my_constant_update = pygame.mouse.get_pos()
-        if pew == True:
-            mx,my = mx_constant_update,my_constant_update
-            
-            dx,dy = mx - laser_rect.centerx,my - laser_rect.centery
-            ## DO THESE TWO IN ONE STEP OF 1 CHANGE AT A TIME!!!
-            laser_rect.x += dx
-            laser_rect.y += dy
-        #
-        #
-        #
-        #
-
-
-        screen.blit(laser,laser_rect)
-        pygame.display.update()
-        mainClock.tick(60)
 
 def options():
     running = True

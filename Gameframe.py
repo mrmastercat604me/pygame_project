@@ -1,7 +1,8 @@
+from cmath import tan
 import pygame, sys, math, random
-
-mainClock = pygame.time.Clock()
 from pygame.locals import *
+import time
+mainClock = pygame.time.Clock()
 pygame.init()
 pygame.display.set_caption('Blastroids Game')
 screen = pygame.display.set_mode((800,800),0,32)
@@ -127,13 +128,16 @@ def game():
 
     lives = 3
     def launch():
-        print("Lift off")
-        dx, dy = shipimage_rect.x - enemyimage_rect.x, shipimage_rect.y - enemyimage_rect.y
-        enemyimage_rect.centerx = dx
-        enemyimage_rect.centery = dy
+        dx = shipimage_rect.x - enemyimage_rect.x
+        dy = shipimage_rect.y - enemyimage_rect.y
+        enemyimage_rect.x += dx//4
+        enemyimage_rect.y += dy//4
         print(dx)
         print(dy)
-    screen.fill((0,0,0))
+        print(math.atan(dy/dx))
+        
+        screen.fill((0,0,0))
+
     while running:
         
         def face_mouse(image,image_rect,correction_angle,surface):
@@ -169,10 +173,11 @@ def game():
             if lives <= 0:
                 running = False
 
-        if enemyimage_rect.colliderect(shipimage_rect):
-            lives -= 1
-            enemyimage_rect.x = random.randint(20,780) 
-            enemyimage_rect.y = random.randint(20,780)
+        #if enemyimage_rect.colliderect(shipimage_rect):
+            #enemyimage_rect.x = random.randint(20,780) 
+            #enemyimage_rect.y = random.randint(20,780)
+
+        
         
         screen.blit(Backgroundimage,Backgroundimage_rec)
 
@@ -220,5 +225,5 @@ def options():
 
         pygame.display.update()
         mainClock.tick(60)
-
+        
 main_menu()

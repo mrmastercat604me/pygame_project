@@ -12,24 +12,10 @@ def draw_text(text, font, color, surface, x,y):
 def game(surface,player,clock,background,background_rect):
 
     running = True
-    #enemyimage = pygame.image.load("assets/meteor1.png")
-    # enemyimage_rect= enemyimage.get_rect()
-    # enemyimage_rect.x = random.randint(20,780) 
-    # enemyimage_rect.y = random.randint(20,780)
-    # if enemyimage_rect.colliderect(player.rect):
-    #     enemyimage_rect.x = random.randint(20,780) 
-    #     enemyimage_rect.y = random.randint(20,780)
-    meteors = []
-    meteor = Meteor(1,(100,100),surface)
-    meteors.append(meteor)
-    
 
-    laser = pygame.image.load(f'assets/pixel_laser_{player.color}.png')
-    laser_rect = laser.get_rect()
-    laser_rect.center = (-100,-100)
-    laser_first = pygame.image.load(f'assets/pixel_laser_{player.color}.png')
-    laser_first_rect = laser_first.get_rect()
-    laser_first_rect.center = (-100,-100)
+    meteors = []
+    meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
+    meteors.append(meteor)
 
     surface.fill((0,0,0))
 
@@ -48,23 +34,6 @@ def game(surface,player,clock,background,background_rect):
         if player.status == "dead":
             running = False
 
-        
-
-
-        # if enemyimage_rect.colliderect(player.rect):
-        #     player.lives -= 1
-        #     enemyimage_rect.x = random.randint(20,780) 
-        #     enemyimage_rect.y = random.randint(20,780)
-        #     if enemyimage_rect.colliderect(player.rect):
-        #         enemyimage_rect.x = random.randint(20,780) 
-        #         enemyimage_rect.y = random.randint(20,780)
-
-        # if laser_rect.colliderect(enemyimage_rect):
-        #     enemyimage_rect.x = random.randint(20,780)
-        #     enemyimage_rect.y = random.randint(20,780)
-
-
-
         surface.blit(background,background_rect)
 
         font = pygame.font.SysFont(None, 40)
@@ -78,6 +47,13 @@ def game(surface,player,clock,background,background_rect):
             if player.laser is not None:
                 if meteor.collision(player.laser.rect):
                     meteors.remove(meteor)
+                    meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
+                    meteors.append(meteor)
+            if meteor.collision(player.rect):
+                player.lives -= 1
+                meteors.remove(meteor)
+                meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
+                meteors.append(meteor)
         
 
         pygame.display.update()

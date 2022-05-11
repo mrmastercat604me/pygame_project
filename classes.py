@@ -1,4 +1,4 @@
-import pygame,math,sys
+import pygame,math,random
 
 class Player():
     def __init__(self,color,pos,surface):
@@ -121,6 +121,6 @@ class Meteor():
         if self.rect.colliderect(rect):
            return True
         return False
+
     def render(self):
         self.surface.blit(self.image,self.rect)
-

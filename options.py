@@ -13,18 +13,23 @@ Backgroundimage = pygame.transform.scale(Backgroundimage,(800,800))
 
 blueship = pygame.image.load("pixel_ship_blue_small.png")
 blueship_rec = blueship.get_rect()
-blueship_rec.topright=(350, 300)
+blueship_rec.topright=(350, 250)
 blueship = pygame.transform.scale(blueship,(200,200))
 
 redship = pygame.image.load("pixel_ship_red_small.png")
 redship_rec = redship.get_rect()
-redship_rec.topright=(120, 300)
+redship_rec.topright=(120, 250)
 redship = pygame.transform.scale(redship,(200,200))
 
 greenship = pygame.image.load("pixel_ship_green_small.png")
 greenship_rec = greenship.get_rect()
-greenship_rec.topright=(620, 300)
+greenship_rec.topright=(620, 250)
 greenship = pygame.transform.scale(greenship,(200,200))
+
+yellowship = pygame.image.load("pixel_ship_yellow.png")
+yellowship_rec = yellowship.get_rect()
+yellowship_rec.topright=(400, 488)
+yellowship = pygame.transform.scale(yellowship,(200,200))
 
 font = pygame.font.SysFont(None, 75)
 
@@ -229,17 +234,20 @@ def colors():
         screen.blit(blueship, blueship_rec)
         screen.blit(redship, redship_rec)
         screen.blit(greenship, greenship_rec)
-        draw_text('Colors',font, (0, 255, 0), screen, 310, 100)
+        draw_text('Colors',font, (0, 255, 0), screen, 317, 100)
         mx, my = pygame.mouse.get_pos()
-        button_5 = pygame.Rect(190, 300, 200, 200)
-        button_6 = pygame.Rect(190, 300, 200, 200)
-        button_7 = pygame.Rect(190, 300, 200, 200)
+        button_5 = pygame.Rect(190, 250, 200, 200)
+        button_6 = pygame.Rect(190, 250, 200, 200)
+        button_7 = pygame.Rect(190, 250, 200, 200)
+        button_8 = pygame.Rect(190, 500, 200, 200)
         button_5.centerx = 150
         button_6.centerx = 400
         button_7.centerx = 650
+        button_8.centerx = 400
         pygame.draw.rect(screen, (255, 0, 0), button_5)
         pygame.draw.rect(screen, (0, 0, 255), button_6)
         pygame.draw.rect(screen, (0, 255, 0), button_7)
+        pygame.draw.rect(screen, (255, 255, 0), button_8)
         #draw_text('Red',font, (0, 0, 0), screen, 100, 350)
         #draw_text('Blue',font, (0, 0, 0), screen, 335, 350)
         #draw_text('green',font, (0, 0, 0),screen, 580, 350)
@@ -252,6 +260,9 @@ def colors():
         if button_7.collidepoint((mx, my)):
             if click:
                 green()
+        if button_8.collidepoint((mx, my)):
+            if click:
+                yellow()
         click = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -267,6 +278,7 @@ def colors():
         screen.blit(blueship, blueship_rec)
         screen.blit(redship, redship_rec)
         screen.blit(greenship, greenship_rec)
+        screen.blit(yellowship, yellowship_rec)
         pygame.display.update()
         mainClock.tick(60)
 
@@ -321,5 +333,22 @@ def green():
 
         pygame.display.update()
         mainClock.tick(60)
-                    
+
+def yellow():
+    running = True
+    while running:
+        screen.fill((0,0,0))
+
+        draw_text('yellow',font, (255, 255, 255), screen, 20, 20)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+
+        pygame.display.update()
+        mainClock.tick(60)
+
 main_menu()

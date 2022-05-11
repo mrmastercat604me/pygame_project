@@ -1,6 +1,6 @@
 import pygame
 import random,math,sys
-from classes import Meteor
+from classes import Meteor, Laser
 
 
 def draw_text(text, font, color, surface, x,y):
@@ -16,6 +16,8 @@ def game(surface,player,clock,background,background_rect):
     meteors = []
     meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
     meteors.append(meteor)
+
+    lasers = []
 
     surface.fill((0,0,0))
 
@@ -40,20 +42,27 @@ def game(surface,player,clock,background,background_rect):
         draw_text((f"Lives: {player.lives}"),font,(255,0,0),surface,0,0)
         draw_text((f"Score: {player.score}"),font,(255,255,0),surface,690,0)
 
-        #surface.blit(enemyimage,enemyimage_rect)
-        player.run(events)
+        player.run(events,lasers)
+
+        for laser in lasers[:]:
+            laser.update()
+            if not surface.get_rect().collidepoint(laser.pos):
+                lasers.remove(laser)
+        for laser in lasers:
+            laser.draw(surface)
         for meteor in meteors:
             meteor.render()
-            if player.laser is not None:
-                if meteor.collision(player.laser.rect):
-                    meteors.remove(meteor)
-                    meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
-                    meteors.append(meteor)
             if meteor.collision(player.rect):
                 player.lives -= 1
                 meteors.remove(meteor)
                 meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
                 meteors.append(meteor)
+            for laser in lasers:
+                if meteor.collision(laser.rect):
+                    meteors.remove(meteor)
+                    lasers.remove(laser)
+                    meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
+                    meteors.append(meteor)
         
 
         pygame.display.update()

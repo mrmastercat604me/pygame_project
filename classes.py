@@ -42,10 +42,9 @@ class Player():
             self.angle =  math.degrees(math.atan2(-dy, dx)) - correction_angle
             rot_image = pygame.transform.rotate(self.image,self.angle)
             rot_image_rect = rot_image.get_rect(center = self.rect.center)
-            #DEBUG pygame.draw.rect(surface,(255,255,255),rot_image_rect,2)
             self.surface.blit(rot_image,rot_image_rect.topleft)
             if self.laser is not None:
-                self.laser.run()
+                self.laser.draw()
 
     def collision(self):
         pass
@@ -56,19 +55,16 @@ class Player():
         else:
             self.status = "alive"
 
-    def summon_laser(self):
+    def summon_laser(self,laser_list):
         if self.click:
-            self.laser = Laser(self.color,self.rect.center,self.surface)
-            self.laser.degrees = self.angle
-            self.laser.image = pygame.transform.rotate(self.laser.image,self.laser.degrees)
-            self.laser.rect = self.laser.image.get_rect(center = self.laser.rect.center)
+            laser_list.append(Laser(self.color,self.rect.center,self.surface))
         self.click = False
 
-    def run(self,events):
+    def run(self,events,laser_list):
         self.controls(events)
         self.collision()
         self.get_status()
-        self.summon_laser()
+        self.summon_laser(laser_list)
         self.render(90)
 
 
@@ -78,25 +74,28 @@ class Laser():
         self.image = pygame.image.load(f'assets/pixel_laser_{self.color}.png')
         self.surface = surface
         self.velocity = 10
-        self.click = False
-        self.rect = self.image.get_rect()
-        self.rect.center = pos
-        self.degrees = 0
-
-        self.base = pygame.image.load(f'assets/pixel_laser_{self.color}.png')
-        self.base_rect = self.base.get_rect()
-        self.base_rect.center = (-100,-100)
+        (x,y) = pos
+        self.pos = (x,y)
+        mx, my = pygame.mouse.get_pos()
+        self.dir = (mx - x, my - y)
+        length = math.hypot(*self.dir)
+        if length ==0.0:
+            self.dir = (0, -1)
+        else:
+            self.dir = (self.dir[0]/length,self.dir[1]/length)
+        angle = math.degrees(math.atan2(-self.dir[1], self.dir[0]))
+        self.image = pygame.image.load(f'assets/pixel_laser_{self.color}.png')
+        self.image = pygame.transform.rotate(self.image, angle+90)
     
-    def render(self):
-        self.surface.blit(self.image,self.rect)
+    def update(self):
+        self.pos = (self.pos[0]+self.dir[0]*self.velocity,
+                    self.pos[1]+self.dir[1]*self.velocity)
 
+    def draw(self,surface):
+        self.rect = self.image.get_rect(center = self.pos)
+        #pygame.draw.rect(self.surface,(255,255,255),self.rect,2)
+        surface.blit(self.image,self.rect)
 
-    def collision(self):
-        pass
-    
-    def run(self):
-        self.render()
-        self.collision()
 
 
 class Meteor():

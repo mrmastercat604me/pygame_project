@@ -1,6 +1,7 @@
 import pygame, sys, math, random
 from classes import Player
 from game import game
+from options import options
 
 mainClock = pygame.time.Clock()
 from pygame.locals import *
@@ -49,7 +50,7 @@ def main_menu():
                 game(screen,player,mainClock,Backgroundimage,Backgroundimage_rec)
         if button_2.collidepoint((mx, my)):
             if click:
-                options()
+                options(screen,Backgroundimage,Backgroundimage_rec)
         click = False
         #----------------------------------
         for event in pygame.event.get():
@@ -63,24 +64,6 @@ def main_menu():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
-
-        pygame.display.update()
-        mainClock.tick(60)
-
-
-def options():
-    running = True
-    while running:
-        screen.fill((0,0,0))
-
-        draw_text('options',font, (255, 255, 255), screen, 20, 20)
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    running = False
 
         pygame.display.update()
         mainClock.tick(60)

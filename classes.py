@@ -56,9 +56,11 @@ class Player():
             self.status = "alive"
         
     def update(self,color):
+        pos = self.rect.center
         self.color = color
         self.image = pygame.image.load(f'assets/pixel_ship_{self.color}.png')
         self.rect = self.image.get_rect()
+        self.rect.center = pos
         
 
 

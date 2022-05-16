@@ -47,13 +47,9 @@ def main_menu():
         draw_text('Options',font, (0, 0, 0), screen, 285, 410)
         if button_2.collidepoint((mx, my)):
             if click:
-                #options(screen,Backgroundimage,Backgroundimage_rec,color)
                 player.update(options(screen,Backgroundimage,Backgroundimage_rec))
-                print(player.color)
         if button_1.collidepoint((mx, my)):
             if click:
-                #player = Player(color,(400,400),screen)
-                print(color)
                 game(screen,player,mainClock,Backgroundimage,Backgroundimage_rec)
         click = False
         #----------------------------------

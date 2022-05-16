@@ -1,28 +1,7 @@
 import pygame, sys, math, random
-
+from ships import *
 mainClock = pygame.time.Clock()
-from pygame.locals import *
 pygame.init()
-
-blueship = pygame.image.load("assets/pixel_ship_blue.png")
-blueship_rec = blueship.get_rect()
-blueship_rec.topright=(350, 250)
-blueship = pygame.transform.scale(blueship,(200,200))
-
-redship = pygame.image.load("assets/pixel_ship_red.png")
-redship_rec = redship.get_rect()
-redship_rec.topright=(120, 250)
-redship = pygame.transform.scale(redship,(200,200))
-
-greenship = pygame.image.load("assets/pixel_ship_green.png")
-greenship_rec = greenship.get_rect()
-greenship_rec.topright=(620, 250)
-greenship = pygame.transform.scale(greenship,(200,200))
-
-yellowship = pygame.image.load("assets/pixel_ship_yellow.png")
-yellowship_rec = yellowship.get_rect()
-yellowship_rec.topright=(400, 488)
-yellowship = pygame.transform.scale(yellowship,(200,200))
 
 font = pygame.font.SysFont(None, 75)
 
@@ -36,6 +15,7 @@ def draw_text(text, font, color, surface, x,y):
 click = False
 
 def options(screen,Backgroundimage,Backgroundimage_rec):
+    color = "yellow"
     running = True
     click = False
     while running:
@@ -56,16 +36,18 @@ def options(screen,Backgroundimage,Backgroundimage_rec):
                 cheat(screen,Backgroundimage,Backgroundimage_rec)
         if button_4.collidepoint((mx, my)):
             if click:
-                colors(screen,Backgroundimage,Backgroundimage_rec)
+                color = colors(screen,Backgroundimage,Backgroundimage_rec,color)
+                print(color)
         click = False
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
                     running = False
-            if event.type == MOUSEBUTTONDOWN:
+                    return color
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
 
@@ -110,7 +92,7 @@ def cheat(screen,Backgroundimage,Backgroundimage_rec):
                         text = text[:-1]
                     else:
                         text += event.unicode
-                if event.key == K_ESCAPE:
+                if event.key == pygame.K_ESCAPE:
                     running = False
 
         screen.fill((0,0,0))
@@ -122,10 +104,9 @@ def cheat(screen,Backgroundimage,Backgroundimage_rec):
         pygame.draw.rect(screen, color, input_box, 2)
 
         pygame.display.update()
-        mainClock.tick(60)
+        clock.tick(60)
 
-def colors(screen,Backgroundimage,Backgroundimage_rec):
-
+def colors(screen,Backgroundimage,Backgroundimage_rec,color):
     running = True
     click = False
     while running:
@@ -150,29 +131,34 @@ def colors(screen,Backgroundimage,Backgroundimage_rec):
         pygame.draw.rect(screen, (255, 255, 0), button_8)
         if button_5.collidepoint((mx, my)):
             if click:
-                ##########################################
+                color = "red"
+                #print("red")
                 pass
         if button_6.collidepoint((mx, my)):
             if click:
-                ##########################################
+                color = "blue"
+                #print("blue")
                 pass
         if button_7.collidepoint((mx, my)):
             if click:
-                #########################################
+                color = "green"
+                #print("green")
                 pass
         if button_8.collidepoint((mx, my)):
             if click:
-                #########################################
+                color = "yellow"
+                #print("yellow")
                 pass
         click = False
         for event in pygame.event.get():
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
                     running = False
-            if event.type == MOUSEBUTTONDOWN:
+                    return color
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
 
@@ -180,74 +166,5 @@ def colors(screen,Backgroundimage,Backgroundimage_rec):
         screen.blit(redship, redship_rec)
         screen.blit(greenship, greenship_rec)
         screen.blit(yellowship, yellowship_rec)
-        pygame.display.update()
-        mainClock.tick(60)
-
-
-# def red(screen,Backgroundimage,Backgroundimage_rec):
-#     running = True
-#     while running:
-#         screen.fill((0,0,0))
-
-#         draw_text('red',font, (255, 255, 255), screen, 20, 20)
-#         for event in pygame.event.get():
-#             if event.type == QUIT:
-#                 pygame.quit()
-#                 sys.exit()
-#             if event.type == KEYDOWN:
-#                 if event.key == K_ESCAPE:
-#                     running = False
-
-#         pygame.display.update()
-#         mainClock.tick(60)
-
-# def blue(screen,Backgroundimage,Backgroundimage_rec):
-#     running = True
-#     while running:
-#         screen.fill((0,0,0))
-
-#         draw_text('blue',font, (255, 255, 255), screen, 20, 20)
-#         for event in pygame.event.get():
-#             if event.type == QUIT:
-#                 pygame.quit()
-#                 sys.exit()
-#             if event.type == KEYDOWN:
-#                 if event.key == K_ESCAPE:
-#                     running = False
-
-#         pygame.display.update()
-#         mainClock.tick(60)
-
-# def green(screen,Backgroundimage,Backgroundimage_rec):
-#     running = True
-#     while running:
-#         screen.fill((0,0,0))
-
-#         draw_text('green',font, (255, 255, 255), screen, 20, 20)
-#         for event in pygame.event.get():
-#             if event.type == QUIT:
-#                 pygame.quit()
-#                 sys.exit()
-#             if event.type == KEYDOWN:
-#                 if event.key == K_ESCAPE:
-#                     running = False
-
-#         pygame.display.update()
-#         mainClock.tick(60)
-
-# def yellow(screen,Backgroundimage,Backgroundimage_rec):
-#     running = True
-#     while running:
-#         screen.fill((0,0,0))
-
-#         draw_text('yellow',font, (255, 255, 255), screen, 20, 20)
-#         for event in pygame.event.get():
-#             if event.type == QUIT:
-#                 pygame.quit()
-#                 sys.exit()
-#             if event.type == KEYDOWN:
-#                 if event.key == K_ESCAPE:
-#                     running = False
-
         pygame.display.update()
         mainClock.tick(60)

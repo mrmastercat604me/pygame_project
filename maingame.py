@@ -16,8 +16,8 @@ Backgroundimage = pygame.transform.scale(Backgroundimage,(800,800))
 
 
 font = pygame.font.SysFont(None, 75)
-
 color = "yellow"
+
 
 def draw_text(text, font, color, surface, x,y):
     textobj = font.render(text, 1, color)
@@ -27,8 +27,9 @@ def draw_text(text, font, color, surface, x,y):
 
 
 click = False
-
+player = Player(color,(400,400),screen)
 def main_menu():
+    global color
     click = False
     while True:
         screen.fill((0,0,0))
@@ -44,13 +45,16 @@ def main_menu():
         pygame.draw.rect(screen, (150, 150, 30), button_2)
         draw_text('Press To Start',font, (0, 0, 0), screen, 217, 310)
         draw_text('Options',font, (0, 0, 0), screen, 285, 410)
-        if button_1.collidepoint((mx, my)):
-            if click:
-                player = Player(color,(400,400),screen)
-                game(screen,player,mainClock,Backgroundimage,Backgroundimage_rec)
         if button_2.collidepoint((mx, my)):
             if click:
-                options(screen,Backgroundimage,Backgroundimage_rec)
+                #options(screen,Backgroundimage,Backgroundimage_rec,color)
+                player.update(options(screen,Backgroundimage,Backgroundimage_rec))
+                print(player.color)
+        if button_1.collidepoint((mx, my)):
+            if click:
+                #player = Player(color,(400,400),screen)
+                print(color)
+                game(screen,player,mainClock,Backgroundimage,Backgroundimage_rec)
         click = False
         #----------------------------------
         for event in pygame.event.get():

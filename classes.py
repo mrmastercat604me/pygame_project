@@ -54,6 +54,13 @@ class Player():
             self.status = "dead"
         else:
             self.status = "alive"
+        
+    def update(self,color):
+        self.color = color
+        self.image = pygame.image.load(f'assets/pixel_ship_{self.color}.png')
+        self.rect = self.image.get_rect()
+        
+
 
     def summon_laser(self,laser_list):
         if self.click:

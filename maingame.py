@@ -18,7 +18,6 @@ Backgroundimage = pygame.transform.scale(Backgroundimage,(800,800))
 font = pygame.font.SysFont(None, 75)
 color = "yellow"
 
-
 def draw_text(text, font, color, surface, x,y):
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
@@ -67,5 +66,4 @@ def main_menu():
 
         pygame.display.update()
         mainClock.tick(60)
-
 main_menu()

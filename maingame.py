@@ -1,4 +1,7 @@
 import pygame, sys, math, random
+from classes import Player
+from game import game
+from options import options
 
 mainClock = pygame.time.Clock()
 from pygame.locals import *
@@ -13,6 +16,7 @@ Backgroundimage = pygame.transform.scale(Backgroundimage,(800,800))
 
 
 font = pygame.font.SysFont(None, 75)
+color = "yellow"
 
 def draw_text(text, font, color, surface, x,y):
     textobj = font.render(text, 1, color)
@@ -22,8 +26,9 @@ def draw_text(text, font, color, surface, x,y):
 
 
 click = False
-
+player = Player(color,(400,400),screen)
 def main_menu():
+    global color
     click = False
     while True:
         screen.fill((0,0,0))
@@ -39,12 +44,12 @@ def main_menu():
         pygame.draw.rect(screen, (150, 150, 30), button_2)
         draw_text('Press To Start',font, (0, 0, 0), screen, 217, 310)
         draw_text('Options',font, (0, 0, 0), screen, 285, 410)
-        if button_1.collidepoint((mx, my)):
-            if click:
-                game()
         if button_2.collidepoint((mx, my)):
             if click:
-                options()
+                player.update(options(screen,Backgroundimage,Backgroundimage_rec))
+        if button_1.collidepoint((mx, my)):
+            if click:
+                game(screen,player,mainClock,Backgroundimage,Backgroundimage_rec)
         click = False
         #----------------------------------
         for event in pygame.event.get():
@@ -61,76 +66,4 @@ def main_menu():
 
         pygame.display.update()
         mainClock.tick(60)
-
-def game():
-    running = True
-    click = False
-    Velocity = 7
-    
-    shipimage = pygame.image.load("assets/pixel_ship_yellow.png")
-    shipimage_rect= shipimage.get_rect()
-    shipimage_rect.center = (400,400)
-    enemyimage = pygame.image.load("assets/meteor1.png")
-    enemyimage_rect= enemyimage.get_rect()
-    enemyimage_rect.x = random.randint(20,780) 
-    enemyimage_rect.y = random.randint(20,780)
-
-    while running:
-        screen.fill((0,0,0))
-        def face_mouse(image,image_rect,correction_angle,surface):
-            mx, my = pygame.mouse.get_pos()
-            dx,dy =  mx - image_rect.centerx, my - image_rect.centery
-            angle =  math.degrees(math.atan2(-dy, dx)) - correction_angle
-            rot_image = pygame.transform.rotate(image,angle)
-            rot_image_rect = rot_image.get_rect(center = image_rect.center)
-            surface.blit(rot_image,rot_image_rect.topleft)
-            pygame.display.update()
-
-        for event in pygame.event.get():
-            key = pygame.key.get_pressed()
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    running = False
-            if key[pygame.K_a]:
-                shipimage_rect.x -= Velocity
-            if key[pygame.K_d]:
-                shipimage_rect.x += Velocity
-            if key[pygame.K_w]:
-                shipimage_rect.y -= Velocity
-            if key[pygame.K_s]:
-                shipimage_rect.y += Velocity
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
-                
-        if click:
-            print("Pew")
-            click = False
-        screen.fill((0,0,0))
-        screen.blit(Backgroundimage,Backgroundimage_rec)
-        screen.blit(enemyimage,enemyimage_rect)
-        face_mouse(shipimage,shipimage_rect,90,screen)
-        pygame.display.update()
-        mainClock.tick(60)
-
-def options():
-    running = True
-    while running:
-        screen.fill((0,0,0))
-
-        draw_text('options',font, (255, 255, 255), screen, 20, 20)
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    running = False
-
-        pygame.display.update()
-        mainClock.tick(60)
-
 main_menu()

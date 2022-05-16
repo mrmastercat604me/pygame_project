@@ -61,8 +61,6 @@ def main_menu():
                 pygame.display.update()
                 player = None
                 player = Player(color,(400,400),screen)
-        else:
-            click = False
         click = False
         #----------------------------------
         for event in pygame.event.get():

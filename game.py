@@ -48,10 +48,16 @@ def game(surface,player,clock,background,background_rect):
             laser.update()
             if not surface.get_rect().collidepoint(laser.pos):
                 lasers.remove(laser)
+        for meteor in meteors[:]:
+            meteor.update()
+            if not surface.get_rect().collidepoint(meteor.pos):
+                meteors.remove(meteor)
+                meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
+                meteors.append(meteor)
         for laser in lasers:
             laser.draw(surface)
         for meteor in meteors:
-            meteor.render()
+            meteor.draw(surface)
             if meteor.collision(player.rect):
                 player.lives -= 1
                 meteors.remove(meteor)

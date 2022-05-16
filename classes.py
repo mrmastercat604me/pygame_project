@@ -45,6 +45,7 @@ class Player():
             self.surface.blit(rot_image,rot_image_rect.topleft)
             if self.laser is not None:
                 self.laser.draw()
+            
 
     def collision(self):
         pass
@@ -88,7 +89,7 @@ class Laser():
         mx, my = pygame.mouse.get_pos()
         self.dir = (mx - x, my - y)
         length = math.hypot(*self.dir)
-        if length ==0.0:
+        if length == 0.0:
             self.dir = (0, -1)
         else:
             self.dir = (self.dir[0]/length,self.dir[1]/length)
@@ -112,23 +113,29 @@ class Meteor():
         self.image = pygame.image.load(f'assets/meteor{level}.png')
         self.surface = surface
         self.level = level
-        self.rect = self.image.get_rect()
-        self.rect.center = pos
+        self.velocity = 5
+        self.rect = self.image.get_rect(center = pos)
+        (x,y) = pos
+        self.pos = (x,y)
+        dx,dy = random.randint(0,800), random.randint(0,800)
+        self.dir = (dx - x, dy - y)
+        length = math.hypot(*self.dir)
+        if length == 0.0:
+            self.dir = (0,-1)
+        else:
+            self.dir = (self.dir[0]/length,self.dir[1]/length)
+        angle = math.degrees(math.atan2(-self.dir[1], self.dir[0]))
+        self.image = pygame.image.load(f'assets/meteor{level}.png')
+        
+    def update(self):
+        self.pos = (self.pos[0]+self.dir[0]*self.velocity,
+                    self.pos[1]+self.dir[1]*self.velocity)
+    
+    def draw(self,surface):
+        self.rect = self.image.get_rect(center = self.pos)
+        surface.blit(self.image,self.rect)
 
     def collision(self,rect):
-        if self.rect.x >= 800:
-            pass
-        elif self.rect.x <= 0:
-            pass
-        elif self.rect.y >= 800:
-            pass
-        elif self.rect.y <= 0:
-            pass
-        else:
-            pass
         if self.rect.colliderect(rect):
            return True
         return False
-
-    def render(self):
-        self.surface.blit(self.image,self.rect)

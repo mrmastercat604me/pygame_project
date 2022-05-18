@@ -38,29 +38,18 @@ def main_menu():
         mx, my = pygame.mouse.get_pos()
         button_1 = pygame.Rect(190, 300, 400, 70)
         button_2 = pygame.Rect(190, 400, 400, 70)
-        button_3 = pygame.Rect(190,500,400,70)
         button_1.centerx = 400
         button_2.centerx = 400
-        button_3.centerx = 400
         pygame.draw.rect(screen, (150, 150, 30), button_1)
         pygame.draw.rect(screen, (150, 150, 30), button_2)
-        pygame.draw.rect(screen,(150,40,40),button_3)
         draw_text('Press To Start',font, (0, 0, 0), screen, 217, 310)
         draw_text('Options',font, (0, 0, 0), screen, 285, 410)
-        draw_text('Reset',font, (0,0,0),screen,335,510)
         if button_2.collidepoint((mx, my)):
             if click:
                 player.update(options(screen,Backgroundimage,Backgroundimage_rec))
-        elif button_1.collidepoint((mx, my)):
+        if button_1.collidepoint((mx, my)):
             if click:
                 game(screen,player,mainClock,Backgroundimage,Backgroundimage_rec)
-        elif button_3.collidepoint((mx,my)):
-            if click:
-                pygame.draw.rect(screen,(125,40,40),button_3)
-                draw_text('Reset',font, (0,0,0),screen,335,510)
-                pygame.display.update()
-                player = None
-                player = Player(color,(400,400),screen)
         click = False
         #----------------------------------
         for event in pygame.event.get():

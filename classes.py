@@ -109,11 +109,12 @@ class Laser():
 
 
 class Meteor():
-    def __init__(self,level,pos,surface):
+    def __init__(self,level,pos,surface,lives=1):
         self.image = pygame.image.load(f'assets/meteor{level}.png')
         self.surface = surface
         self.level = level
-        self.velocity = 5
+        self.velocity = 3
+        self.lives = lives
         self.rect = self.image.get_rect(center = pos)
         (x,y) = pos
         self.pos = (x,y)

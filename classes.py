@@ -132,6 +132,10 @@ class Meteor():
         self.pos = (self.pos[0]+self.dir[0]*self.velocity,
                     self.pos[1]+self.dir[1]*self.velocity)
     
+    def collision_spawn(self,rect):
+        if self.rect.colliderect(rect):
+            self.pos = (random.randint(0,800),random.randint(0,800))
+
     def draw(self,surface):
         self.rect = self.image.get_rect(center = self.pos)
         surface.blit(self.image,self.rect)

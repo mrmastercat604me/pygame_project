@@ -14,9 +14,9 @@ def game(surface,player,clock,background,background_rect):
     running = True
 
     meteors = []
-    meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
+    meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
     meteors.append(meteor)
-
+    
     lasers = []
 
     surface.fill((0,0,0))

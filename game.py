@@ -31,7 +31,7 @@ def game(surface,player,clock,background,background_rect):
                 if event.key == pygame.K_ESCAPE:
                     running = False
                 if event.key == pygame.K_m:
-                    meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
+                    meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
                     meteors.append(meteor)
         if player.status == "dead":
             running = False
@@ -52,7 +52,7 @@ def game(surface,player,clock,background,background_rect):
             meteor.update()
             if not surface.get_rect().collidepoint(meteor.pos):
                 meteors.remove(meteor)
-                meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
+                meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
                 meteors.append(meteor)
         for laser in lasers:
             laser.draw(surface)
@@ -61,13 +61,13 @@ def game(surface,player,clock,background,background_rect):
             if meteor.collision(player.rect):
                 player.lives -= 1
                 meteors.remove(meteor)
-                meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
+                meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
                 meteors.append(meteor)
             for laser in lasers:
                 if meteor.collision(laser.rect):
                     meteors.remove(meteor)
                     lasers.remove(laser)
-                    meteor = Meteor(1,(random.randint(0,800),random.randint(0,800)),surface)
+                    meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
                     meteors.append(meteor)
         
 

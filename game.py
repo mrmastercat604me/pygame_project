@@ -15,12 +15,24 @@ def game(surface,player,clock,background,background_rect):
 
     meteors = []
     meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
+<<<<<<< HEAD
+=======
+    meteor.collision_spawn(player.rect)
+>>>>>>> fe2f92494a1828efa9235017a319d4b5db556e40
     meteors.append(meteor)
     
     lasers = []
 
     surface.fill((0,0,0))
-
+    meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
+    meteor.collision_spawn(player.rect)
+    meteors.append(meteor)
+    meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
+    meteor.collision_spawn(player.rect)
+    meteors.append(meteor)
+    meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
+    meteor.collision_spawn(player.rect)
+    meteors.append(meteor)
     while running:
         events = pygame.event.get()
         for event in events:
@@ -32,6 +44,7 @@ def game(surface,player,clock,background,background_rect):
                     running = False
                 if event.key == pygame.K_m:
                     meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
+                    meteor.collision_spawn(player.rect)
                     meteors.append(meteor)
         if player.status == "dead":
             running = False
@@ -53,6 +66,7 @@ def game(surface,player,clock,background,background_rect):
             if not surface.get_rect().collidepoint(meteor.pos):
                 meteors.remove(meteor)
                 meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
+                meteor.collision_spawn(player.rect)
                 meteors.append(meteor)
         for laser in lasers:
             laser.draw(surface)
@@ -62,12 +76,14 @@ def game(surface,player,clock,background,background_rect):
                 player.lives -= 1
                 meteors.remove(meteor)
                 meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
+                meteor.collision_spawn(player.rect)
                 meteors.append(meteor)
             for laser in lasers:
                 if meteor.collision(laser.rect):
                     meteors.remove(meteor)
                     lasers.remove(laser)
                     meteor = Meteor(0,(random.randint(0,800),random.randint(0,800)),surface)
+                    meteor.collision_spawn(player.rect)
                     meteors.append(meteor)
         
 
